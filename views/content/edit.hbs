@@ -1,0 +1,46 @@
+<section id="Wrapper">
+  <h3>Edit Content</h3>
+  <div class="row">
+    <form class="col s12" action="/content/{{content._id}}" method="post">
+      <input type="hidden" name="_method" value="put">
+      <div class="row">
+        <div class="input-field">
+          <input type="text" name="title" id="title" value="{{content.title}}">
+          <label for="title">Title</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field">
+          <select id="status" name="status">
+            {{#select content.status}}
+            <option value="public" selected>Public</option>
+            <option value="private">Private</option>
+            {{/select}}
+          </select>
+          <label for="status">Status</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field">
+          <h5>Changes?</h5>
+          <textarea name="body" id="contentBody">{{content.body}}</textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <input type="submit" value="Save" class="btn">
+        <a href="/dashboard" class="btn red">Cancel</a>
+      </div>
+
+    </form>
+  </div>
+
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js" integrity="sha512-Ooi9IbjM2SIDjQ02ENbPFuuORT8F8Rc+rowcYfLneDwKRxw1+gVVj5tciVmV/APnA/Ys+qy1MbNKK3k2EaAHcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+CKEDITOR.replace('contentBody', {
+  plugins: 'wysiwygarea, toolbar, basicstyles, link'
+})
+</script>

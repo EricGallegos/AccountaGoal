@@ -1,0 +1,41 @@
+<section id="Wrapper">
+  <h4 class="center">Welcome {{name}} to your Dashboard</h6>
+
+  {{#if content}}
+    <table class="striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each content}}
+          <tr>
+            <td><a href="/content/{{_id}}">{{title}}</a></td>
+            <td>{{formatDate createdAt 'MMMM Do YYYY, h:mm:ss a'}}</td>
+            <td><span class="dash-status">{{status}}</span></td>
+            <td>
+              <a href="/content/edit/{{_id}}" class="btn btn-float">
+                <i class="fas fa-edit"></i>
+              </a>
+
+              <form id="delete-form" action="/content/{{_id}}" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" name="DELETE" class="btn red">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+  {{else}}
+    <p class="center">You have not posted anything</p>
+  {{/if}}
+
+</section>

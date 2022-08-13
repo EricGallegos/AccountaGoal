@@ -1,0 +1,36 @@
+{
+  "name": "accountagoal",
+  "version": "1.0.0",
+  "description": "Motivating Task Manager",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EricGallegos/AccountaGoal.git"
+  },
+  "author": "Eric Gallegos",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/EricGallegos/AccountaGoal/issues"
+  },
+  "homepage": "https://github.com/EricGallegos/AccountaGoal#readme",
+  "dependencies": {
+    "connect-mongo": "^4.6.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6",
+    "express-session": "^1.17.3",
+    "method-override": "^3.0.0",
+    "moment": "^2.29.4",
+    "mongoose": "^6.5.2",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.19"
+  }
+}

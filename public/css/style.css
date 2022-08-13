@@ -1,0 +1,50 @@
+.login-container{
+  width:400px;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.container{
+  width: 100%;
+  max-width: none;
+  margin: none;
+}
+
+p{
+  margin: 10px 0;
+}
+
+.fa-google{
+  margin-right: 10px;
+}
+
+.card-image .fa-small{
+  font-size: 16px;
+}
+
+.btn-float{
+  float: left;
+  margin-right: 10px;
+}
+
+.img-small{
+  width: 4rem;
+}
+
+#bodyWrapper{
+  width: 100%;
+}
+
+#navBar{
+  display: flex;
+  width: 100%;
+}
+
+#navBar > div{
+  max-width: 1280px;
+}
+
+#Wrapper{
+  max-width: 1280px;
+  margin: 0 auto;
+}
