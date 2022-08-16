@@ -41,4 +41,8 @@ module.exports = {
       ' selected="selected"$&'
     )
   },
+  checkStatus: function(status){
+    if(status == "incomplete") return false;
+    if(status == "complete") return true;
+  },
 }

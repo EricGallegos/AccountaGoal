@@ -38,7 +38,7 @@ if(process.env.NODE_ENV === 'development'){
 }
 
 // Handlebars Helpers
-const { formatDate, stripTags, truncate, editIcon, select } = require('./helpers/hbs')
+const { formatDate, stripTags, truncate, editIcon, select, checkStatus } = require('./helpers/hbs')
 
 // Handlebars
 app.engine('.hbs', exphbs.engine({
@@ -48,6 +48,7 @@ app.engine('.hbs', exphbs.engine({
     truncate,
     editIcon,
     select,
+    checkStatus,
   },
   defaultLayout: 'main',
   extname: '.hbs',
@@ -81,7 +82,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 app.use('/', require('./routes/index'));
 app.use('/auth', require('./routes/auth'));
-app.use('/content', require('./routes/content'))
+app.use('/goals', require('./routes/goals'))
 
 const PORT = process.env.PORT || 3001;
 

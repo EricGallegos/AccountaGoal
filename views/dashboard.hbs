@@ -1,41 +1,79 @@
 <section id="Wrapper">
-  <h4 class="center">Welcome {{name}} to your Dashboard</h6>
+  <div class="row">
+    <div class="col s12 m12 l6 taskList">
+      <h4 class="center">Your Daily Goals</h6>
 
-  {{#if content}}
-    <table class="striped">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Date</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each content}}
-          <tr>
-            <td><a href="/content/{{_id}}">{{title}}</a></td>
-            <td>{{formatDate createdAt 'MMMM Do YYYY, h:mm:ss a'}}</td>
-            <td><span class="dash-status">{{status}}</span></td>
-            <td>
-              <a href="/content/edit/{{_id}}" class="btn btn-float">
-                <i class="fas fa-edit"></i>
-              </a>
+      {{#if goals}}
+        <table class="striped">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Goal</th>
+              <!-- <th>Date</th> -->
+              <th>Edit/Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each goals}}
+              <tr>
+                <td class="center">
+                  {{#if (checkStatus status)}}
+                    <form class="put-form" action="/goals/toggleIncomplete/{{_id}}" method="post">
+                      <input type="hidden" name="_method" value="put">
+                      <button type="submit" name="toggleIncomplete">
+                        <i class="fa-solid fa-check"></i>
+                      </button>
+                    </form>
+                  {{else}}
+                    <form class="put-form" action="/goals/toggleComplete/{{_id}}" method="post">
+                      <input type="hidden" name="_method" value="put">
+                      <button type="submit" name="toggleComplete">
+                        <i class="fa-solid fa-x"></i>
+                      </button>
+                    </form>
+                  {{/if}}
+                </td>
+                <!-- <td><span class="dash-status">{{status}}</span></td> -->
+                <td><a href="/goals/{{_id}}">{{{truncate (stripTags body) 60}}}</a></td>
+                <!-- <td>{{formatDate createdAt 'MMMM Do YYYY, hA'}}</td> -->
+                <td width="110px">
+                  <a href="/goals/edit/{{_id}}" class="btn-small btn-float left">
+                    <i class="fas fa-edit"></i>
+                  </a>
 
-              <form id="delete-form" action="/content/{{_id}}" method="post">
-                <input type="hidden" name="_method" value="delete">
-                <button type="submit" name="DELETE" class="btn red">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </form>
-            </td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
+                  <form id="delete-form" action="/goals/{{_id}}" method="post">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit" name="DELETE" class="btn-small btn-float right red">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
 
-  {{else}}
-    <p class="center">You have not posted anything</p>
-  {{/if}}
+      {{else}}
+        <p class="center">You have not posted anything</p>
+      {{/if}}
+    </div>
+    <div class="col s12 m12 l6">
+      <section>
+        <h4 class="center">Your AccountaGoal History</h4>
+        <form class="" action="index.html" method="post">
 
+        </form>
+      </section>
+      <section>
+        <div class="historyChart">
+
+        </div>
+      </section>
+      <section>
+        <div class="calendar">
+
+        </div>
+      </section>
+    </div>
+  </div>
 </section>

@@ -1,28 +1,22 @@
 
 <section id="Wrapper">
-  <h3>Add Story</h3>
+  <h3>New Goals?</h3>
   <div class="row">
-    <form class="col s12" action="/content" method="post">
-      <div class="row">
-        <div class="input-field">
-          <input type="text" name="title" id="title">
-          <label for="title">Title</label>
-        </div>
-      </div>
+    <form class="col s12" action="/goals" method="post">
 
       <div class="row">
         <div class="input-field">
-          <select id="status" name="status">
-            <option value="public" selected>Public</option>
-            <option value="private">Private</option>
+          <select id="status" name="repeating">
+            <option value="once" selected>One Time</option>
+            <option value="daily">Daily</option>
           </select>
-          <label for="status">Status</label>
+          <label for="repeating">Is this goal for today only?</label>
         </div>
       </div>
 
       <div class="row">
         <div class="input-field">
-          <h5>What content are you adding?</h5>
+          <h5>Describe your goal here</h5>
           <textarea name="body" id="contentBody"></textarea>
         </div>
       </div>

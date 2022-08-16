@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
 
-const ContentSchema = new mongoose.Schema({
-  title: {
+const GoalSchema = new mongoose.Schema({
+  body: {
     type: String,
     required: true,
     trim: true,
   },
-  body: {
+  repeating:{
     type: String,
     required: true,
+    default: 'once',
   },
   status: {
     type: String,
-    default: 'public',
-    enum: ['public', 'private'],
+    default: 'incomplete',
+    enum: ['incomplete', 'complete'],
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -25,4 +26,4 @@ const ContentSchema = new mongoose.Schema({
   }
 })
 
-module.exports = mongoose.model('Content', ContentSchema);
+module.exports = mongoose.model('Goal', GoalSchema);
