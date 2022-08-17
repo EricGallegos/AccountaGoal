@@ -1,18 +1,10 @@
 <section id="Wrapper">
-  <h3>Edit Content</h3>
+  <h3>Edit Goal</h3>
   <div class="row">
-    <form class="col s12" action="/content/{{content._id}}" method="post">
-      <input type="hidden" name="_method" value="put">
+    <form class="col s12" action="/goals/{{content._id}}" method="post">
       <div class="row">
         <div class="input-field">
-          <input type="text" name="title" id="title" value="{{content.title}}">
-          <label for="title">Title</label>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="input-field">
-          <select id="status" name="status">
+          <select id="status" name="repeating">
             {{#select content.status}}
             <option value="public" selected>Public</option>
             <option value="private">Private</option>
@@ -33,7 +25,6 @@
         <input type="submit" value="Save" class="btn">
         <a href="/dashboard" class="btn red">Cancel</a>
       </div>
-
     </form>
   </div>
 

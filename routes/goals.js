@@ -1,169 +1,25 @@
 const express = require('express');
 const router = express.Router();
+const controller = require('../controller/goals')
 const { ensureAuth } = require('../middleware/auth');
 
-const Goals  = require('../models/Goal');
+router.get('/', ensureAuth, controller.redirectDashboard)
 
-// @desc     Show all Goals
-// @route    GET /goals
-router.get('/', ensureAuth, async (req, res) => {
-  try {
-    res.redirect('/dashboard');
+router.put('/toggleComplete/:id', ensureAuth, controller.toggleComplete)
 
+router.put('/toggleIncomplete/:id', ensureAuth, controller.toggleIncomplete)
 
-  } catch (e) {
-      console.error(e);
-      res.render('error/500');
-  }
-})
+router.get('/add', ensureAuth, controller.getAddGoals)
 
-// @desc     Toggle Complete Status on Goals
-// @route    PUT /goals/:id
-router.put('/toggleComplete/:id', ensureAuth, async(req, res) =>{
-  try {
-    let goal = await Goals.findById(req.params.id).lean();
-    if(!goal){
-      return res.render('error/404');
-    }
-    if(goal.user != req.user.id){
-      res.redirect('/dashboard');
-    } else{
-      goal = await Goals.findOneAndUpdate({ _id: req.params.id }, {
-        $set:{
-          status: "complete",
-        },
-      });
+router.get('/:id', ensureAuth, controller.getOneGoal)
 
-      res.redirect('/dashboard')
-    }
-  } catch (e) {
-    console.error(e);
-    return res.render('error/500');
-  }
-})
+router.post('/', ensureAuth, controller.postGoal)
 
-// @desc     Toggle Incomplete Status on Goals
-// @route    PUT /goals/:id
-router.put('/toggleIncomplete/:id', ensureAuth, async(req, res) =>{
-  try {
-    let goal = await Goals.findById(req.params.id).lean();
-    if(!goal){
-      return res.render('error/404');
-    }
-    if(goal.user != req.user.id){
-      res.redirect('/dashboard');
-    } else{
-      goal = await Goals.findOneAndUpdate({ _id: req.params.id }, {
-        $set:{
-          status: "incomplete",
-        },
-      });
+router.get('/edit/:id', ensureAuth, controller.getEditGoals)
 
-      res.redirect('/dashboard')
-    }
-  } catch (e) {
-    console.error(e);
-    return res.render('error/500');
-  }
-})
+router.put('/:id', ensureAuth, controller.putGoal)
 
-// @desc     Show add goals page
-// @route    GET /goals/add
-router.get('/add', ensureAuth, (req, res) => {
-  res.render('goals/add')
-})
-
-// @desc     Show individual goal page
-// @route    GET /goals/:id
-router.get('/:id', ensureAuth, async (req, res) => {
-  try {
-    let goal = await Goals.findById(req.params.id)
-      .populate('user')
-      .lean();
-
-      if(!goal){
-          return res.render('error/404');
-      }
-      res.render('goals/show', {
-        goal,
-      })
-  } catch (e) {
-    console.error(e);
-    res.render('error/404');
-  }
-})
-
-
-// @desc     Process form
-// @route    POST /goals
-router.post('/', ensureAuth, async (req, res) => {
-  try {
-    req.body.user = req.user.id;
-    await Goals.create(req.body);
-    res.redirect('/dashboard');
-  } catch (e) {
-    console.error(e);
-    res.render('error/500');
-  }
-})
-
-
-// @desc     Show edit Goals page
-// @route    GET /goals/edit/<goal.id>
-router.get('/edit/:id', ensureAuth, async (req, res) => {
-  try {
-    const goals = await Goals.findOne({_id: req.params.id}).lean();
-    if(!goals){
-      return res.render('error/404');
-    }
-    if(goals.user != req.user.id){
-      res.redirect('/dashboard');
-    } else{
-      res.render('goals/edit', {
-        goals,
-      })
-    }
-  } catch (e) {
-    console.error(e);
-    return res.render('error/500');
-  }
-})
-
-// @desc     Process edit form
-// @route    PUT /goals/<goal.id>
-router.put('/:id', ensureAuth, async (req, res) => {
-  try {
-    let goals = await Goals.findById(req.params.id).lean();
-    if(!goals){
-      return res.render('error/404');
-    }
-    if(goals.user != req.user.id){
-      res.redirect('/dashboard');
-    } else{
-      goals = await Goals.findOneAndUpdate({ _id: req.params.id }, req.body, {
-        new: true,
-        runValidators: true,
-      });
-
-      res.redirect('/dashboard')
-    }
-  } catch (e) {
-    console.error(e);
-    return res.render('error/500');
-  }
-})
-
-// @desc     Delete Goal
-// @route    DELETE /goals/<goal.id>
-router.delete('/:id', ensureAuth, async (req, res) => {
-  try {
-    await Goals.deleteOne( { _id: req.params.id } );
-    res.redirect('/dashboard')
-  } catch (e) {
-      console.error(e);
-      return res.render('error/500')
-  }
-})
+router.delete('/:id', ensureAuth, controller.deleteGoal)
 
 
 module.exports = router;
