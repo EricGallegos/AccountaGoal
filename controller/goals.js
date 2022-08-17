@@ -1,27 +1,6 @@
 const Goals  = require('../models/Goal');
 
 module.exports = {
-
-  // @desc     Show individual goal page
-  // @route    GET /goals/:id
-  getOneGoal: async (req, res) => {
-    try {
-      let goal = await Goals.findById(req.params.id)
-        .populate('user')
-        .lean();
-
-        if(!goal){
-            return res.render('error/404');
-        }
-        res.render('goals/show', {
-          goal,
-        })
-    } catch (e) {
-      console.error(e);
-      res.render('error/404');
-    }
-  },
-
   // @desc     Show add goals page
   // @route    GET /goals/add
   getAddGoals: (req, res) => {
@@ -112,6 +91,7 @@ module.exports = {
         goal = await Goals.findOneAndUpdate({ _id: req.params.id }, {
           $set:{
             status: "complete",
+            completedOn: new Date(),
           },
         });
 
@@ -137,6 +117,7 @@ module.exports = {
         goal = await Goals.findOneAndUpdate({ _id: req.params.id }, {
           $set:{
             status: "incomplete",
+            completedOn: null,
           },
         });
 

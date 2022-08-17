@@ -34,6 +34,10 @@ const GoalSchema = new mongoose.Schema({
   },
   startDate: {
     type: Date,
+  },
+  completedOn: {
+    type: Date,
+    default: null,
   }
 })
 
