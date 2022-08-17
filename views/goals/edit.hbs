@@ -1,23 +1,25 @@
 <section id="Wrapper">
-  <h3>Edit Goal</h3>
+  <h5>Edit Goal</h5>
   <div class="row">
-    <form class="col s12" action="/goals/{{content._id}}" method="post">
+    <form class="col s12" action="/goals/{{goal._id}}" method="post">
+      <input type="hidden" name="_method" value="put">
+
       <div class="row">
         <div class="input-field">
           <select id="status" name="repeating">
-            {{#select content.status}}
-            <option value="public" selected>Public</option>
-            <option value="private">Private</option>
+            {{#select goal.repeating}}
+            <option value="false" selected>One Day</option>
+            <option value="true">Every Day (Date determines when goal will first appear)</option>
             {{/select}}
           </select>
-          <label for="status">Status</label>
+          <label for="status">Should this goal repeat daily?</label>
         </div>
       </div>
 
       <div class="row">
         <div class="input-field">
-          <h5>Changes?</h5>
-          <textarea name="body" id="contentBody">{{content.body}}</textarea>
+          <h5>Change your goal here</h5>
+          <textarea name="body" id="contentBody">{{stripTags goal.body}}</textarea>
         </div>
       </div>
 
@@ -29,9 +31,3 @@
   </div>
 
 </section>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js" integrity="sha512-Ooi9IbjM2SIDjQ02ENbPFuuORT8F8Rc+rowcYfLneDwKRxw1+gVVj5tciVmV/APnA/Ys+qy1MbNKK3k2EaAHcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script type="text/javascript">
-CKEDITOR.replace('contentBody', {
-  plugins: 'wysiwygarea, toolbar, basicstyles, link'
-})
-</script>

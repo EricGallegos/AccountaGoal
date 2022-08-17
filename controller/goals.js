@@ -46,15 +46,15 @@ module.exports = {
   // @route    GET /goals/edit/<goal.id>
   getEditGoals: async (req, res) => {
     try {
-      const goals = await Goals.findOne({_id: req.params.id}).lean();
-      if(!goals){
+      const goal = await Goals.findOne({_id: req.params.id}).lean();
+      if(!goal){
         return res.render('error/404');
       }
-      if(goals.user != req.user.id){
+      if(goal.user != req.user.id){
         res.redirect('/dashboard');
       } else{
         res.render('goals/edit', {
-          goals,
+          goal,
         })
       }
     } catch (e) {

@@ -1,4 +1,9 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
+
+function toEndOfDay(date){
+  return moment(date).endOf('day')
+}
 
 const GoalSchema = new mongoose.Schema({
   body: {
@@ -8,8 +13,7 @@ const GoalSchema = new mongoose.Schema({
   },
   repeating:{
     type: String,
-    required: true,
-    default: 'once',
+    default: false,
   },
   status: {
     type: String,
@@ -23,7 +27,12 @@ const GoalSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-  }
+  },
+  dueDate:{
+    type: Date,
+    set: toEndOfDay,
+    required: true,
+  },
 })
 
 module.exports = mongoose.model('Goal', GoalSchema);

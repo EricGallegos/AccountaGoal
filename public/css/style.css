@@ -52,3 +52,7 @@ p{
   max-width: 100%;
   max-height: 100%;
 }
+
+.input-field > span{
+  color: rgba(0, 0, 0, .5);
+}

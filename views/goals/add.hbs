@@ -1,30 +1,32 @@
 
 <section id="Wrapper">
-  <h3>New Goals?</h3>
+  <h5>New Goals?</h5>
   <div class="row">
     <form class="col s12" action="/goals" method="post">
 
       <div class="row">
         <div class="input-field">
           <select id="status" name="repeating">
-            <option value="false" selected>One Time</option>
-            <option value="true">Daily</option>
+            <option value="false" selected>One Day</option>
+            <option value="true">Every Day (Date determines when goal will first appear)</option>
           </select>
-          <label for="repeating">Is this goal for today only?</label>
+          <label for="repeating">Should this goal repeat daily?</label>
         </div>
       </div>
 
       <div class="row">
         <div class="input-field">
-          <input type="date" name="expirationDate" value=""
+          <input type="date" name="dueDate" value="{{getToday "en-US"}}"
                  min="2022-1-1" max="2023-12-31">
+          <label for="dueDate" id="dueDate">Date</label>
         </div>
       </div>
 
       <div class="row">
         <div class="input-field">
-          <h5>Describe your goal here</h5>
+          <span>Describe your goal here</span>
           <textarea name="body" id="contentBody"></textarea>
+
         </div>
       </div>
 
@@ -36,9 +38,3 @@
     </form>
   </div>
 </section>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js" integrity="sha512-Ooi9IbjM2SIDjQ02ENbPFuuORT8F8Rc+rowcYfLneDwKRxw1+gVVj5tciVmV/APnA/Ys+qy1MbNKK3k2EaAHcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script type="text/javascript">
-  CKEDITOR.replace('contentBody', {
-    plugins: 'wysiwygarea, toolbar, basicstyles, link'
-  })
-</script>

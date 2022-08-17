@@ -45,4 +45,9 @@ module.exports = {
     if(status == "incomplete") return false;
     if(status == "complete") return true;
   },
+  getToday: function(timeZone){
+    let format = 'YYYY-MM-DD'
+    let today = new Date();
+    return moment(today).format(format)
+  },
 }
