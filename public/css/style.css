@@ -69,3 +69,14 @@ p{
 .taskList.col.s12{
   min-height: 50vh;
 }
+
+#editDeleteButtons{
+  width: 110px;
+}
+
+#editDeleteButtons .btn-small{
+  opacity: .5;
+}
+#editDeleteButtons .btn-small:hover{
+  opacity: .9;
+}
