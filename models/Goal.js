@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 
-function toEndOfDay(date){
-  return moment(date).endOf('day')
+function toStartOfDay(date){
+  return moment(date).startOf('day');
 }
 
 const GoalSchema = new mongoose.Schema({
@@ -28,11 +28,17 @@ const GoalSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  dueDate:{
+  dueDate: {
     type: Date,
-    set: toEndOfDay,
-    required: true,
+    set: d => moment(d).endOf('day'),
   },
+  startDate: {
+    type: Date,
+  }
+})
+
+GoalSchema.pre('save', function(){
+  this.startDate = moment(this.dueDate).startOf('day');
 })
 
 module.exports = mongoose.model('Goal', GoalSchema);

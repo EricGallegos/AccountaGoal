@@ -19,6 +19,13 @@
     <script>
       M.Sidenav.init(document.querySelector('.sidenav'));
       M.FormSelect.init(document.querySelector('#status'));
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, {
+          format: 'yyyy-mm-dd',
+          minDate: new Date(),
+        });
+      });
     </script>
   </body>
 </html>
