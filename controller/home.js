@@ -47,8 +47,8 @@ module.exports = {
       let futureGoals = new Array;
       for( let i = 0; i < 4; i++ ){
         futureGoals.push({name: moment(new Date()).add(i+1, 'days').format('dddd'),
-                       goals: upcoming.shift().slice(0, 5),
-                     })
+                          goals: upcoming.shift(),
+                        })
       }
 
       res.render('dashboard', {
