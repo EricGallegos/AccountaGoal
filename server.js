@@ -8,6 +8,7 @@ const passport      = require('passport');                // auth
 const session       = require('express-session');         //
 const MongoStore    = require('connect-mongo');
 const connectDB     = require('./config/db');
+const favicon       = require('serve-favicon');
 
 // Load Config
 dotenv.config({ path: './config/config.env'})
@@ -30,6 +31,8 @@ app.use(methodOverride(function(req, res) {
     return method;
   }
 }))
+
+app.use(favicon(__dirname + '/favicon.ico'));
 
 // Logging
 if(process.env.NODE_ENV === 'development'){

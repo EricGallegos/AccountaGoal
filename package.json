@@ -27,7 +27,8 @@
     "moment": "^2.29.4",
     "mongoose": "^6.5.2",
     "passport": "^0.6.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "morgan": "^1.10.0",
