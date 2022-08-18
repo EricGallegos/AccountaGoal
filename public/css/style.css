@@ -80,3 +80,25 @@ p{
 #editDeleteButtons .btn-small:hover{
   opacity: .9;
 }
+
+.chart-data.center.card{
+  scrollbar-width: thin;
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 50vh;
+  overflow-y: hidden;
+  padding: 0;
+  gap:1px;
+}
+
+.chart-data.center.card:hover{
+  overflow-y: auto;
+}
+
+.chart-cell{
+  min-width: 20px;
+  min-height: 20px;
+  flex-grow: 1;
+  aspect-ratio: 1/1;
+  width: 13%;
+}
