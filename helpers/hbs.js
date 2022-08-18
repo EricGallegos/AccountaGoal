@@ -15,6 +15,7 @@ module.exports = {
     return str;
   },
   stripTags: function(input){
+    if(!input) return;
     return input.replace(/<(?:.|\n)*?>/gm, '');
   },
   editIcon: function(contentUser, loggedUser, contentId, floating = true){

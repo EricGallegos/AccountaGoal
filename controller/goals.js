@@ -25,13 +25,17 @@ module.exports = {
   // @route    GET /goals/edit/<goal.id>
   getEditGoals: async (req, res) => {
     try {
-      const goal = await Goals.findOne({_id: req.params.id}).lean();
+      let goal = await Goals.findOne({_id: req.params.id}).lean();
       if(!goal){
         return res.render('error/404');
       }
       if(goal.user != req.user.id){
         res.redirect('/dashboard');
       } else{
+         if(goal.archived == true){
+           goal = await Goals.findOne({_id: goal.creatorID}).lean();
+           console.log(goal)
+         }
         res.render('goals/edit', {
           goal,
         })
