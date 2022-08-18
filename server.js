@@ -2,7 +2,6 @@ const path          = require('path');
 const express       = require('express');
 const mongoose      = require('mongoose');
 const dotenv        = require('dotenv');
-const morgan        = require('morgan');                  //Log handling
 const exphbs        = require('express-handlebars');      // view engine
 const methodOverride =require('method-override')          //
 const passport      = require('passport');                // auth
@@ -34,6 +33,7 @@ app.use(methodOverride(function(req, res) {
 
 // Logging
 if(process.env.NODE_ENV === 'development'){
+  const morgan = require('morgan');                  //Log handling
   app.use(morgan('dev'));
 }
 
