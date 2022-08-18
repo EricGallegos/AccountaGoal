@@ -116,7 +116,7 @@ function generateChart(all, completed, now){
   let totalNum;
   let completedNum;
   let dailyValues = [];
-  console.log(completed, now);
+  console.log(completed, moment(now).startOf('day').toDate());
 
   for (let i = 0; i < 140; i++){
     totalNum = 0;
