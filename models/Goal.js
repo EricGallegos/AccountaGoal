@@ -38,11 +38,19 @@ const GoalSchema = new mongoose.Schema({
   completedOn: {
     type: Date,
     default: null,
+  },
+  archived:{
+    type: Boolean,
+    default: false,
+  },
+  creatorID:{
+    type: mongoose.Schema.Types.ObjectId,
   }
 })
 
-GoalSchema.pre('save', function(){
+GoalSchema.pre('save', async function(){
   this.startDate = moment(this.dueDate).startOf('day');
-})
+  const now = new Date();
+  })
 
 module.exports = mongoose.model('Goal', GoalSchema);

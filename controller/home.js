@@ -13,32 +13,79 @@ module.exports = {
   // @route    GET /dashboard
   getDashboard: async (req, res) => {
     try {
-      //Get repeating goals + todays goals and combine them for viewing
-      const repeatingGoals = await Goals.find({
-                                      user: req.user.id,
-                                      repeating: true,
-                                    }).lean();
+      const now = new Date();
       let todaysGoals = await Goals.find({
                                       user: req.user.id,
-                                      dueDate: { $gt: new Date() },
-                                      startDate: { $lt: new Date()},
+                                      dueDate: { $gt: now },
+                                      startDate: { $lt: now},
+                                      repeating: false,
+                                    }).lean()
+      // count archived goals
+      let found = 0;
+      todaysGoals.forEach( goal =>{
+        if(goal.archived) found++;
+      })
+
+      // Get all repeating goals that should appear
+      repeatingGoals = await Goals.find({
+                    user: req.user.id,
+                    repeating: true,
+                    archived: false,
+                    startDate: {$lt: now}
+                  }).lean();
+
+
+      // If fewer archived goals than repeating goals we must add new archived goals
+      if(repeatingGoals.length > found ){
+        repeatingGoals.forEach( async goal => {
+            found = await Goals.findOne({
+              body: goal.body,
+              archived: true,
+            })
+
+            if( !found ){
+              await Goals.create({
+                user: req.user.id,
+                dueDate: now,
+                repeating: false,
+                body: goal.body,
+                archived: true,
+                creatorID: goal._id,
+              })
+            }
+        })
+      }
+      // Get all todays goals after adding temp versions of repeating goals
+      todaysGoals = await Goals.find({
+                                      user: req.user.id,
+                                      dueDate: { $gt: now },
+                                      startDate: { $lt: now},
                                       repeating: false,
                                     }).lean();
-      todaysGoals = repeatingGoals.concat(todaysGoals);
 
-      let chartData = generateChart(await Goals.find({user: req.user.id,}).lean(), await Goals.find({
-        user: req.user.id,
-        completedOn: {$ne: null},
-        $expr: {$lt:["completeOn", "dueDate"]}
-      }).lean())
+
+      // Get all goal data to build history chart
+      let chartData = generateChart(await Goals.find({
+          user: req.user.id,
+          repeating: false,
+        }).lean(),
+
+         await Goals.find({
+          user: req.user.id,
+          completedOn: {$ne: null},
+          $expr: {$lt:["completeOn", "dueDate"]}
+        }).lean(),
+
+        now
+      )
 
       //Get goals for user for next 4 days
       let upcoming = new Array;
       for( let i = 0; i < 4; i++){
         upcoming.push(await Goals.find({
                                         user: req.user.id,
-                                        dueDate: { $gt: moment(new Date()).add(i+1, 'days') },
-                                        startDate: { $lt: moment(new Date()).add(i+1, 'days')},
+                                        dueDate: { $gt: moment(now).add(i+1, 'days') },
+                                        startDate: { $lt: moment(now).add(i+1, 'days')},
                                         repeating: false,
                                       }).lean() )
       }
@@ -46,7 +93,7 @@ module.exports = {
       //Attach the goals to an object that also has the name of the day
       let futureGoals = new Array;
       for( let i = 0; i < 4; i++ ){
-        futureGoals.push({name: moment(new Date()).add(i+1, 'days').format('dddd'),
+        futureGoals.push({name: moment(now).add(i+1, 'days').format('dddd'),
                           goals: upcoming.shift(),
                         })
       }
@@ -64,7 +111,7 @@ module.exports = {
   },
 }
 
-function generateChart(all, completed){
+function generateChart(all, completed, now){
   let totalNum;
   let completedNum;
   let dailyValues = [];
@@ -72,14 +119,16 @@ function generateChart(all, completed){
   for (let i = 0; i < 140; i++){
     totalNum = 0;
     completedNum = 0;
-    let start = moment(new Date).startOf('day').add(-i, 'days').toDate();
+    let start = moment(now).startOf('day').add(-i, 'days').toDate();
 
-    all.forEach(goal =>{
+    completed.forEach( completedGoal =>{
+      if( completedGoal.startDate.getTime() == start.getTime()){
+        completedNum++;
+      }
+    })
+    all.forEach( goal =>{
       if( goal.startDate.getTime() == start.getTime()){
         totalNum++;
-        if( goal.completedOn ){
-          completedNum++;
-        }
       }
     })
     if(totalNum == 0 || completedNum == 0) {
@@ -96,5 +145,6 @@ function generateChart(all, completed){
     if( val > .6 && val <= .8) return .8;
     if( val > .8 && val <= 1) return 1;
   })
+  console.log(dailyValues)
   return dailyValues;
 }
