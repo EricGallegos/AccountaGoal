@@ -112,6 +112,7 @@ module.exports = {
 }
 
 function generateChart(all, completed, now){
+  let t0 = performance.now()
   let totalNum;
   let completedNum;
   let dailyValues = [];
@@ -145,6 +146,8 @@ function generateChart(all, completed, now){
     if( val > .6 && val <= .8) return .8;
     if( val > .8 && val <= 1) return 1;
   })
+  let t1= performance.now();
+  console.log(dailyValues);
+  console.log('Time taken to execute function: '+ (t1-t0) +' milliseconds');
   return dailyValues;
-  console.log(dailyValues)
 }
