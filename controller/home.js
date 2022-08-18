@@ -146,4 +146,5 @@ function generateChart(all, completed, now){
     if( val > .8 && val <= 1) return 1;
   })
   return dailyValues;
+  console.log(dailyValues)
 }
