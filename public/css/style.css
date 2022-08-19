@@ -128,7 +128,7 @@ p{
 .calendarCarousel > a{
   width: 33.333333%;
   flex: 0 0 auto;
-  scroll-snap-align: end;
+  scroll-snap-align: center;
 }
 
 .carouselButton{
@@ -138,7 +138,7 @@ p{
   height: 330px;
   margin: .5rem 0 1rem 0;
   transition: .3s ease;
-  color: green;
+  color: #212121
 }
 .carouselButton:hover{
   background-color: #02150117;
