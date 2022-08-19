@@ -1,7 +1,8 @@
 # AccountaGoal
 Motivating Task Manager
 
-![Alt text](public\sources\AccountaGoalLogo.png)
+![AccountaGoalLogo](https://user-images.githubusercontent.com/46502883/185517168-3c9b4e6e-1fa0-49ca-ae15-2a413cdc3370.png)
+
 
 Keep track of your goals and as a bonus build a historical heatmap of
 your accomplishments!
