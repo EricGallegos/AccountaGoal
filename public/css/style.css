@@ -1,7 +1,18 @@
+#loginButton{
+  padding-bottom: 0;
+}
+#loginButton > a{
+  line-height: 55px;
+  letter-spacing: 3.5px;
+  height: 55px;
+  font-size: 1.4rem;
+}
+
 .login-container{
   width:400px;
   margin-top: 50px;
   text-align: center;
+  font-size: 1.2rem;
 }
 
 .container{
