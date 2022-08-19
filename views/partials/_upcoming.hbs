@@ -1,0 +1,55 @@
+<div class="row" name="upcoming">
+  <div class="class col s12">
+    <div class="divider"></div>
+    <h5 id="upcoming">Upcoming <span class="grey-text">* Does not display repeating goals</span></h5>
+  </div>
+  <div class="row">
+    <a href="#one!">
+      <div id="carouselBack" class="col s1 carouselButton">
+        <i class="fa-solid fa-arrow-left"></i>
+      </div>
+    </a>
+
+    <div class="col s10 calendarCarousel">
+      {{#each futureGoals}}
+        <a class="center" id="{{getNumWord @index}}!">
+          <div class="card center calendarDay" >
+            <table class="centered">
+              <thead>
+                <th>{{name}}</th>
+              </thead>
+              <tbody>
+                {{#if goals}}
+                {{#each goals}}
+                  <tr>
+                    <td class="simpleCarousel">
+                      <a href="#{{_id}}btns" id="{{_id}}listing" class="simpleMain">{{{truncate (stripTags body) 25}}}</a>
+                      <div id="{{_id}}btns" class="tableBtns">
+                        <a href="#{{_id}}listing" class="btn-small grey darken-3"><i class="fa-solid fa-arrow-left"></i> </a>
+                        <a href="/goals/edit/{{_id}}" class="btn-small btn-float left">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <form id="delete{{_id}}" action="/goals/{{_id}}" method="post">
+                          <input type="hidden" name="_method" value="delete">
+                          <button type="submit" name="DELETE" class="btn-small btn-float right red darken-2">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                {{/each}}
+                {{/if}}
+              </tbody>
+            </table>
+          </div>
+        </a>
+      {{/each}}
+    </div>
+    <a href="#six!">
+      <div id="carouselForward" class="col s1 carouselButton">
+        <i class="fa-solid fa-arrow-right"></i>
+      </div>
+    </a>
+  </div>
+</div>

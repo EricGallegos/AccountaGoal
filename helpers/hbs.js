@@ -51,4 +51,28 @@ module.exports = {
     let today = new Date();
     return moment(today).format(format)
   },
+  getNumWord: function(num){
+    switch (num) {
+      case 0:
+        return 'one';
+        break;
+      case 1:
+        return 'two';
+        break;
+      case 2:
+        return 'three';
+        break;
+      case 3:
+        return 'four';
+        break;
+      case 4:
+        return 'five';
+        break;
+      case 5:
+        return 'six';
+        break;
+      default:
+        return 'one';
+    }
+  }
 }
