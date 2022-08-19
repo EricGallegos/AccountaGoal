@@ -13,6 +13,7 @@ module.exports = {
   // @route    GET /dashboard
   getDashboard: async (req, res) => {
     try {
+      const t0 = performance.now();
       const now = new Date();
       let todaysGoals = await Goals.find({
                                       user: req.user.id,
@@ -98,6 +99,8 @@ module.exports = {
                         })
       }
 
+      const t1 = performance.now();
+      console.log(t1-t0);
       res.render('dashboard', {
         name: req.user.firstName,
         todaysGoals,

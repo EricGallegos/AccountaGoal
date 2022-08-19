@@ -4,7 +4,7 @@
   "description": "Motivating Task Manager",
   "main": "server.js",
   "scripts": {
-    "dev": "env TZ='America/Los_Angeles' nodemon server.js",
+    "dev": "nodemon server.js",
     "start": "node server.js"
   },
   "repository": {
