@@ -82,6 +82,15 @@ p{
   max-width: 70px;
 }
 
+#upcoming{
+  margin-left: 20%;
+  font-size: 2.2rem;
+}
+#upcoming span{
+  font-size: 1rem;
+}
+
+
 .calendarDay.card.center{
   height: 330px;
   overflow-y: hidden;

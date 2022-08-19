@@ -9,7 +9,6 @@
             <tr>
               <th class="center">Completed</th>
               <th>Goal</th>
-              <!-- <th>Date</th> -->
               <th>Edit / Delete</th>
             </tr>
           </thead>
@@ -71,7 +70,7 @@
     </div>
   </div>
 
-  <h6 class="bold">Upcoming</h6>
+  <h5 id="upcoming">Upcoming <span class="grey-text">* Does not display repeating goals</span></h5>
   <div class="divider"></div>
   <div class="row center section" name="upcoming">
     {{#each futureGoals}}
@@ -92,8 +91,6 @@
         </table>
       </div>
     {{/each}}
-    <span class="left grey-text"></label>* Does not display repeating goals</span>
   </div>
-
 </div>
 </section>
