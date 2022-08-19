@@ -13,82 +13,85 @@ module.exports = {
   // @route    GET /dashboard
   getDashboard: async (req, res) => {
     try {
-      const t0 = performance.now();
       const now = new Date();
-      let todaysGoals = await Goals.find({
-                                      user: req.user.id,
-                                      dueDate: { $gt: now },
-                                      startDate: { $lt: now},
-                                      repeating: false,
-                                    }).lean()
+
+      const allGoals = await Goals.find({
+        user: req.user.id,
+      }).lean();
+
+      let todaysGoals = allGoals.filter( goal => {
+        if( goal.dueDate.getTime() > now &&
+            goal.startDate.getTime() < now &&
+            goal.repeating == 'false') return true;
+        return false;
+      })
       // count archived goals
-      let found = 0;
+      let numArchived = 0;
       todaysGoals.forEach( goal =>{
-        if(goal.archived) found++;
+        if(goal.archived) numArchived++;
       })
 
       // Get all repeating goals that should appear
-      repeatingGoals = await Goals.find({
-                    user: req.user.id,
-                    repeating: true,
-                    archived: false,
-                    startDate: {$lt: now}
-                  }).lean();
-
-
+      let repeatingGoals = allGoals.filter( goal => {
+        if( goal.repeating == 'true' &&
+            goal.archived == false &&
+            goal.startDate.getTime() < now.getTime() ) return true;
+        return false;
+      })
       // If fewer archived goals than repeating goals we must add new archived goals
-      if(repeatingGoals.length > found ){
+      if(repeatingGoals.length > numArchived ){
+        // Check for a archived goal with a matching creatorID
         repeatingGoals.forEach( async goal => {
-            found = await Goals.findOne({
-              body: goal.body,
+            const found = await Goals.findOne({
+              creatorID: goal._id,
               archived: true,
             })
-
+            // If matching creatorID not found, create new archived goal
             if( !found ){
               await Goals.create({
                 user: req.user.id,
                 dueDate: now,
-                repeating: false,
+                repeating: 'false',
                 body: goal.body,
                 archived: true,
                 creatorID: goal._id,
               })
             }
         })
+
+        // Get all todays goals after adding temp versions of repeating goals
+        todaysGoals = await Goals.find({
+                                        user: req.user.id,
+                                        dueDate: { $gt: now },
+                                        startDate: { $lt: now},
+                                        repeating: false,
+                                      }).lean();
       }
-      // Get all todays goals after adding temp versions of repeating goals
-      todaysGoals = await Goals.find({
-                                      user: req.user.id,
-                                      dueDate: { $gt: now },
-                                      startDate: { $lt: now},
-                                      repeating: false,
-                                    }).lean();
 
 
       // Get all goal data to build history chart
-      let chartData = generateChart(await Goals.find({
-          user: req.user.id,
-          repeating: false,
-        }).lean(),
-
-         await Goals.find({
-          user: req.user.id,
-          completedOn: {$ne: null},
-          $expr: {$lt:["completeOn", "dueDate"]}
-        }).lean(),
-
-        now
-      )
+      const totalGoals = allGoals.filter( goal => {
+        if(goal.repeating == 'false') return true;
+        return false;
+      })
+      const totalCompleted = allGoals.filter( goal => {
+        if( goal.repeating == 'false' &&
+            goal.status == 'complete' &&
+            goal.completedOn.getTime() < goal.dueDate.getTime() ) return true;
+        return false;
+      })
+      let chartData = generateChart(totalGoals, totalCompleted, now);
+      console.log(totalCompleted)
 
       //Get goals for user for next 4 days
       let upcoming = new Array;
       for( let i = 0; i < 4; i++){
-        upcoming.push(await Goals.find({
-                                        user: req.user.id,
-                                        dueDate: { $gt: moment(now).add(i+1, 'days') },
-                                        startDate: { $lt: moment(now).add(i+1, 'days')},
-                                        repeating: false,
-                                      }).lean() )
+        upcoming.push( allGoals.filter( goal => {
+          if( goal.dueDate.getTime() > moment(now).add(i+1, 'days').toDate().getTime() &&
+              goal.startDate.getTime() < moment(now).add(i+1, 'days').toDate().getTime() &&
+              goal.repeating == 'false' ) return true;
+          return false;
+        }))
       }
 
       //Attach the goals to an object that also has the name of the day
@@ -98,9 +101,6 @@ module.exports = {
                           goals: upcoming.shift(),
                         })
       }
-
-      const t1 = performance.now();
-      console.log(t1-t0);
       res.render('dashboard', {
         name: req.user.firstName,
         todaysGoals,
