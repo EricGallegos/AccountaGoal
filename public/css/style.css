@@ -25,6 +25,16 @@ p{
   width: 4rem;
 }
 
+#addGoalButton{
+  height: 80px;
+  width: 80px;
+}
+
+#addGoalButton i{
+  font-size: 3.6rem;
+  line-height: 80px;
+}
+
 #bodyWrapper{
   width: 100%;
 }
