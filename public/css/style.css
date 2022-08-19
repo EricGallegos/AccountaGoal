@@ -153,7 +153,7 @@ p{
 
 .calendarDay.card.center{
   height: 330px;
-  overflow-y: hidden;
+  overflow-y: auto;
   scrollbar-width: thin;
   color: black;
 }
@@ -173,6 +173,7 @@ p{
   width: 100%;
   flex: 0 0 auto;
   scroll-snap-align: start;
+  color: black
 }
 .tableBtns{
   flex: 0 0 auto;

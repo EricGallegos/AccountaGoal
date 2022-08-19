@@ -23,9 +23,9 @@
                 {{#each goals}}
                   <tr>
                     <td class="simpleCarousel">
-                      <a href="#{{_id}}btns" id="{{_id}}listing" class="simpleMain">{{{truncate (stripTags body) 25}}}</a>
-                      <div id="{{_id}}btns" class="tableBtns">
-                        <a href="#{{_id}}listing" class="btn-small grey darken-3"><i class="fa-solid fa-arrow-left"></i> </a>
+                      <a href="#{{getNumWord @index}}btns" id="{{getNumWord @index}}listing" class="simpleMain">{{{truncate (stripTags body) 25}}}</a>
+                      <div id="{{getNumWord @index}}btns" class="tableBtns">
+                        <a href="#{{getNumWord @index}}listing" class="btn-small grey darken-3"><i class="fa-solid fa-arrow-left"></i> </a>
                         <a href="/goals/edit/{{_id}}" class="btn-small btn-float left">
                           <i class="fas fa-edit"></i>
                         </a>
