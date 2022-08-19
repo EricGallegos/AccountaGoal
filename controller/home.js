@@ -38,7 +38,7 @@ module.exports = {
             goal.startDate.getTime() < now.getTime() ) return true;
         return false;
       })
-      // If fewer archived goals than repeating goals we must add new archived goals
+      //If fewer archived goals than repeating goals we must add new archived goals
       if(repeatingGoals.length > numArchived ){
         // Check for a archived goal with a matching creatorID
         repeatingGoals.forEach( async goal => {
@@ -48,6 +48,7 @@ module.exports = {
             })
             // If matching creatorID not found, create new archived goal
             if( !found ){
+              console.log('testing');
               await Goals.create({
                 user: req.user.id,
                 dueDate: now,
@@ -56,20 +57,19 @@ module.exports = {
                 archived: true,
                 creatorID: goal._id,
               })
+              // Get all todays goals after adding temp versions of repeating goals
+              todaysGoals = await Goals.find({
+                                              user: req.user.id,
+                                              dueDate: { $gt: now },
+                                              startDate: { $lt: now},
+                                              repeating: false,
+                                            }).lean();
             }
         })
-
-        // Get all todays goals after adding temp versions of repeating goals
-        todaysGoals = await Goals.find({
-                                        user: req.user.id,
-                                        dueDate: { $gt: now },
-                                        startDate: { $lt: now},
-                                        repeating: false,
-                                      }).lean();
       }
 
 
-      // Get all goal data to build history chart
+      // Get goal data to build history chart
       const totalGoals = allGoals.filter( goal => {
         if(goal.repeating == 'false') return true;
         return false;
@@ -80,8 +80,7 @@ module.exports = {
             goal.completedOn.getTime() < goal.dueDate.getTime() ) return true;
         return false;
       })
-      let chartData = generateChart(totalGoals, totalCompleted, now);
-      console.log(totalCompleted)
+      const chartData = generateChart(totalGoals, totalCompleted, now);
 
       //Get goals for user for next 4 days
       let upcoming = new Array;
@@ -142,11 +141,16 @@ function generateChart(all, completed, now){
   }
   dailyValues = dailyValues.map(val =>{
     if( val == 0) return 0;
-    if( val > 0 && val <= .2) return .2;
-    if( val > .2 && val <= .4) return .4;
-    if( val > .4 && val <= .6) return .6;
-    if( val > .6 && val <= .8) return .8;
-    if( val > .8 && val <= 1) return 1;
+    if( val > 0 && val <= .1 ) return .1;
+    if( val > .1 && val <= .2 ) return .2;
+    if( val > .2 && val <= .3 ) return .3;
+    if( val > .3 && val <= .4 ) return .4;
+    if( val > .4 && val <= .5 ) return .5;
+    if( val > .5 && val <= .6 ) return .6;
+    if( val > .6 && val <= .7 ) return .7;
+    if( val > .7 && val <= .8 ) return .8;
+    if( val > .8 && val <= .9 ) return .9;
+    if( val > .9 && val <= 1 ) return 1;
   })
   return dailyValues;
 }

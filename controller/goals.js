@@ -1,4 +1,5 @@
 const Goals  = require('../models/Goal');
+const moment = require('moment')
 
 module.exports = {
   // @desc     Show add goals page
@@ -12,10 +13,19 @@ module.exports = {
   postGoal: async (req, res) => {
     try {
       req.body.user = req.user.id;
-      console.log(req.body);
-      await Goals.create(req.body);
+      temp = await Goals.create(req.body);
+      if(req.body.repeating == 'true'){
+        await Goals.create({
+          user: req.body.user,
+          body: req.body.body,
+          archived: true,
+          creatorID: temp._id,
+          dueDate: req.body.dueDate,
+        })
+      }
       res.redirect('/dashboard');
-    } catch (e) {
+    }
+    catch (e) {
       console.error(e);
       res.render('error/500');
     }
@@ -34,13 +44,13 @@ module.exports = {
       } else{
          if(goal.archived == true){
            goal = await Goals.findOne({_id: goal.creatorID}).lean();
-           console.log(goal)
          }
         res.render('goals/edit', {
           goal,
         })
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.error(e);
       return res.render('error/500');
     }
@@ -50,21 +60,60 @@ module.exports = {
   // @route    PUT /goals/<goal.id>
   putGoal: async (req, res) => {
     try {
-      let goals = await Goals.findById(req.params.id).lean();
-      if(!goals){
+      let goal = await Goals.findById(req.params.id).lean();
+      if(!goal){
         return res.render('error/404');
       }
-      if(goals.user != req.user.id){
+      if(goal.user != req.user.id){
         res.redirect('/dashboard');
-      } else{
-        goals = await Goals.findOneAndUpdate({ _id: req.params.id }, req.body, {
-          new: true,
+      }
+      else{
+        const now = new Date();
+        goal = await Goals.findOneAndUpdate({ _id: req.params.id }, req.body, {
           runValidators: true,
         });
 
+        if ( req.body.repeating == 'true' && goal.startDate.getTime() < now.getTime()){
+          // If goal is keeping its daily status
+          if( goal.repeating == 'true'){
+          goal = await Goals.findOneAndUpdate({
+              creatorID: goal._id,
+              archived: true,
+              startDate: moment(now).startOf('day'),
+            }, {
+              body: req.body.body,
+              dueDate: req.body.dueDate,
+              repeating: 'false',
+            }, {
+              new: true,
+              runValidators: true,
+            })
+            console.log(goal);
+          }
+          // If goal is changing from one day to repeating
+          else{
+            await Goals.create({
+              user: req.user.id,
+              body: req.body.body,
+              archived: true,
+              creatorID: goal._id,
+              dueDate: req.body.dueDate,
+            })
+          }
+        }
+        // If goal is changing from repeating to one day
+        if ( req.body.repeating == 'false' && goal.repeating == 'true'
+             && goal.startDate.getTime() < now.getTime() ){
+          await Goals.findOneAndDelete({
+            creatorID: goal._id,
+            startDate: moment(now).startOf('day'),
+          })
+        }
+
         res.redirect('/dashboard')
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.error(e);
       return res.render('error/500');
     }
@@ -75,7 +124,8 @@ module.exports = {
   redirectDashboard: async (req, res) => {
     try {
       res.redirect('/dashboard');
-    } catch (e) {
+    }
+    catch (e) {
         console.error(e);
         res.render('error/500');
     }
@@ -101,7 +151,8 @@ module.exports = {
 
         res.redirect('/dashboard')
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.error(e);
       return res.render('error/500');
     }
@@ -127,7 +178,8 @@ module.exports = {
 
         res.redirect('/dashboard')
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.error(e);
       return res.render('error/500');
     }
@@ -137,9 +189,14 @@ module.exports = {
   // @route    DELETE /goals/<goal.id>
   deleteGoal: async (req, res) => {
     try {
+      const target = await Goals.findOne( { _id: req.params.id } )
       await Goals.deleteOne( { _id: req.params.id } );
+      if(target.archived == true ){
+        await Goals.deleteOne( { _id: target.creatorID })
+      }
       res.redirect('/dashboard')
-    } catch (e) {
+    }
+    catch (e) {
         console.error(e);
         return res.render('error/500')
     }
