@@ -72,23 +72,22 @@ module.exports = {
         goal = await Goals.findOneAndUpdate({ _id: req.params.id }, req.body, {
           runValidators: true,
         });
-
+        // If goal is changed to repeating we must create an archived goal
         if ( req.body.repeating == 'true' && goal.startDate.getTime() < now.getTime()){
-          // If goal is keeping its daily status
+          //  keeping its daily status
           if( goal.repeating == 'true'){
-          goal = await Goals.findOneAndUpdate({
+          await Goals.findOneAndUpdate({
               creatorID: goal._id,
               archived: true,
               startDate: moment(now).startOf('day'),
             }, {
               body: req.body.body,
-              dueDate: req.body.dueDate,
+              dueDate: moment(now).endOf('day'),
               repeating: 'false',
             }, {
               new: true,
               runValidators: true,
-            })
-            console.log(goal);
+            });
           }
           // If goal is changing from one day to repeating
           else{
@@ -101,13 +100,12 @@ module.exports = {
             })
           }
         }
-        // If goal is changing from repeating to one day
-        if ( req.body.repeating == 'false' && goal.repeating == 'true'
-             && goal.startDate.getTime() < now.getTime() ){
-          await Goals.findOneAndDelete({
-            creatorID: goal._id,
-            startDate: moment(now).startOf('day'),
-          })
+        // If goal is changing from repeating to one day update goal and delete todays archived ver
+        if ( req.body.repeating == 'false' && goal.repeating == 'true'){
+               await Goals.findOneAndDelete({
+                 creatorID: goal._id,
+                 startDate: moment(now).startOf('day'),
+               })
         }
 
         res.redirect('/dashboard')

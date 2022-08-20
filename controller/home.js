@@ -38,34 +38,38 @@ module.exports = {
             goal.startDate.getTime() < now.getTime() ) return true;
         return false;
       })
+
       //If fewer archived goals than repeating goals we must add new archived goals
       if(repeatingGoals.length > numArchived ){
         // Check for a archived goal with a matching creatorID
-        repeatingGoals.forEach( async goal => {
-            const found = await Goals.findOne({
-              creatorID: goal._id,
-              archived: true,
-            })
+        repeatingGoals.forEach( async repeating => {
+          const found = allGoals.filter( goal => {
+            if( goal.creatorID == repeating._id &&
+                archived == true &&
+                goal.dueDate.getTime() > now &&
+                goal.startDate.getTime() < now) return true;
+            return false;
+          });
             // If matching creatorID not found, create new archived goal
-            if( !found ){
-              console.log('testing');
+            if( found.length == 0 ){
               await Goals.create({
                 user: req.user.id,
                 dueDate: now,
                 repeating: 'false',
-                body: goal.body,
+                body: repeating.body,
                 archived: true,
-                creatorID: goal._id,
+                creatorID: repeating._id,
               })
               // Get all todays goals after adding temp versions of repeating goals
-              todaysGoals = await Goals.find({
-                                              user: req.user.id,
-                                              dueDate: { $gt: now },
-                                              startDate: { $lt: now},
-                                              repeating: false,
-                                            }).lean();
-            }
+            //   todaysGoals = await Goals.find({
+            //                                   user: req.user.id,
+            //                                   dueDate: { $gt: now },
+            //                                   startDate: { $lt: now},
+            //                                   repeating: false,
+            //                                 }).lean();
+          }
         })
+        res.redirect('/dashboard'); // If new goals were added reload the page
       }
 
 
