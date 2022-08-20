@@ -115,7 +115,7 @@ module.exports = {
   // @desc     PrivacyPolicy
   // @route    GET /about/privacypolicy
   getAbout: (req, res) =>{
-    res.sendFile('views/privacyPolicy.html', {root: `C:/Users/air_w/Documents/GitHub/AccountaGoal`} )
+    res.sendFile('views/privacyPolicy.html', {root: __dirname + '/..'} )
   }
 }
 function generateChart(all, completed, now){
