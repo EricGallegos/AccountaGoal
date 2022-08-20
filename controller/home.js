@@ -111,8 +111,13 @@ module.exports = {
       res.render('error/500');
     }
   },
-}
 
+  // @desc     PrivacyPolicy
+  // @route    GET /about/privacypolicy
+  getAbout: (req, res) =>{
+    res.sendFile('views/privacyPolicy.html', {root: `C:/Users/air_w/Documents/GitHub/AccountaGoal`} )
+  }
+}
 function generateChart(all, completed, now){
   let totalNum;
   let completedNum;

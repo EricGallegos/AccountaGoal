@@ -7,4 +7,6 @@ router.get('/', ensureGuest, controller.getLanding)
 
 router.get('/dashboard', ensureAuth, controller.getDashboard)
 
+router.get('/about/privacypolicy', ensureAuth, controller.getAbout)
+
 module.exports = router;
