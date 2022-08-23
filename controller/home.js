@@ -1,4 +1,5 @@
 const Goals  = require('../models/Goal');
+const User = require('../models/User')
 const moment = require('moment');
 module.exports = {
   // @desc     Login / Landing page
@@ -118,10 +119,30 @@ module.exports = {
 
   // @desc     PrivacyPolicy
   // @route    GET /about/privacypolicy
-  getAbout: (req, res) =>{
+  getAbout: async (req, res) =>{
     res.sendFile('views/privacyPolicy.html', {root: __dirname + '/..'} )
-  }
+  },
+
+  // @desc     Delete account
+  // @route    DELETE /account/deleteAccount
+  deleteAccount: async (req, res) => {
+    try {
+      console.log(req.user.id);
+      await Goals.deleteMany({
+        user: req.user.id,
+      })
+      await User.deleteOne({
+        _id: req.user.id,
+      })
+      res.redirect('/')
+    } catch (e) {
+      console.error(e);
+      res.redirect('/error/500')
+    }
+  },
 }
+
+
 function generateChart(all, completed, now){
   let totalNum;
   let completedNum;
