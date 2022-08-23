@@ -12,7 +12,29 @@
       <h4 class="green-text text-darken-2">AccountaGoal</h4>
       <li><a href="/dashboard">Dashboard</a></li>
       <li><a href="/auth/logout">Logout</a></li>
+
+      <li>
+        <section id="deleteCarousel">
+          <a id="RUSure" href="#deleteAccountButtons">
+            <span class="red-text text-darken-2">Delete User</span>
+          </a>
+
+          <section id="deleteAccountButtons">
+            <a href="#RUSure"><button type="button" class="btn grey darken-2" name="cancelAccountDeletion">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button></a>
+            <form id="deleteUser" action="/account/deleteAccount" method="post">
+              <input type="hidden" name="_method" value="delete">
+              <button type="submit" name="DELETE" class="btn-small btn-float red darken-4">
+                <i class="fas fa-trash"></i>
+              </button>
+            </form>
+          </section>
+        </section>
+      </li>
+
       <li class="about"><a href="/about/privacypolicy">Privacy Policy</a></li>
+
     </ul>
   </div>
 </nav>
