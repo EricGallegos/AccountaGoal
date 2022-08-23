@@ -20,27 +20,6 @@
   margin: none;
 }
 
-#deleteCarousel{
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  scroll-behavior: smooth;
-}
-#deleteCarousel > *{
-  width: 100%;
-  flex: 0 0 auto;
-}
-#deleteAccountButtons{
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  line-height: 76px;
-}
-
-#deleteAccountButtons button{
-  height: 90%;
-}
-
 .about{
   position: absolute;
   bottom: 6rem;
@@ -116,8 +95,8 @@ p{
 }
 
 .brand-logo{
-  width: 140px;
-  bottom: -40px;
+  width: 120px;
+  bottom: -30px;
 }
 
 .brand-logo img{
@@ -129,8 +108,8 @@ p{
   color: rgba(0, 0, 0, .5);
 }
 
-#completed{
-  width:80px;
+.status.center{
+  max-width: 70px;
 }
 
 #upcoming{
