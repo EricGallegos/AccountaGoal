@@ -101,7 +101,7 @@ module.exports = {
       //Attach the goals to an object that also has the name of the day
       let futureGoals = new Array;
       for( let i = 0; i < 6; i++ ){
-        futureGoals.push({name: moment(now).add(i+1, 'days').format('dddd'),
+        futureGoals.push({name: moment(now).add(i+1, 'days').format('dddd, MMM Do'),
                           goals: upcoming.shift(),
                         })
       }
