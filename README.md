@@ -13,12 +13,13 @@ in the satisfying act of filling a chart with data.
 Even better that data will be everything you have been getting done!
 
 ## Built with
-- node.js
+- Node.js
 - Materialize
-- handlebars
-- mongoDB
+- Handlebars
+- MongoDB
 - Google Auth 2.0
-- css
+- HTML
+- CSS
 
 ## Learning focus
 - MVC architecture
