@@ -13,7 +13,7 @@ const GoalSchema = new mongoose.Schema({
   },
   repeating:{
     type: String,
-    default: false,
+    default: 'false',
   },
   status: {
     type: String,
