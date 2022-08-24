@@ -1,7 +1,7 @@
 <div class="row" name="upcoming">
   <div class="class col s12">
     <div class="divider"></div>
-    <h5 id="upcoming">Upcoming <span class="grey-text">* Does not display repeating goals</span></h5>
+    <h5 id="upcoming">Upcoming</h5>
   </div>
   <div class="row">
     <a href="#one!">
@@ -23,9 +23,12 @@
                 {{#each goals}}
                   <tr>
                     <td class="simpleCarousel">
-                      <a href="#{{getNumWord @index}}btns" id="{{getNumWord @index}}listing" class="simpleMain">{{{truncate (stripTags body) 25}}}</a>
-                      <div id="{{getNumWord @index}}btns" class="tableBtns">
-                        <a href="#{{getNumWord @index}}listing" class="btn-small grey darken-3"><i class="fa-solid fa-arrow-left"></i> </a>
+                      <a href="#{{getNumWord @index}}-{{truncate ../name 3}}btns"
+                         id="{{getNumWord @index}}-{{truncate ../name 3}}"
+                         class="simpleMain">{{{truncate (stripTags body) 25}}}
+                       </a>
+                      <div id="{{getNumWord @index}}-{{truncate ../name 3}}btns" class="tableBtns">
+                        <a href="#{{getNumWord @index}}-{{truncate ../name 3}}" class="btn-small grey darken-3"><i class="fa-solid fa-arrow-left"></i> </a>
                         <a href="/goals/edit/{{_id}}" class="btn-small btn-float left">
                           <i class="fas fa-edit"></i>
                         </a>

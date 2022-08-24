@@ -10,7 +10,7 @@ module.exports = {
       newStr = str.substr(0, len);
       newStr = str.substr(0, newStr.lastIndexOf(' '));
       newStr = newStr.length > 0 ? newStr : str.substr(0, len);
-      return newStr + '...'
+      return newStr;
     }
     return str;
   },
@@ -71,8 +71,20 @@ module.exports = {
       case 5:
         return 'six';
         break;
+      case 6:
+        return 'seven';
+        break;
+      case 7:
+        return 'eight';
+        break;
+      case 8:
+        return 'nine';
+        break;
+      case 9:
+        return 'ten';
+        break;
       default:
-        return 'one';
+        return 'zero';
     }
   }
 }

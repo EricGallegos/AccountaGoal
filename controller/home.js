@@ -87,7 +87,7 @@ module.exports = {
       })
       const chartData = generateChart(totalGoals, totalCompleted, now);
 
-      //Get goals for user for next 4 days
+      //Get goals for user for next 6 days
       let upcoming = new Array;
       for( let i = 0; i < 6; i++){
         upcoming.push( allGoals.filter( goal => {
@@ -96,6 +96,11 @@ module.exports = {
               goal.repeating == 'false' ) return true;
           return false;
         }))
+        upcoming[i] = upcoming[i].concat( repeatingGoals.filter( goal => {
+          if( goal.startDate.getTime() < moment(now).add(i+1, 'days').toDate().getTime() ) return true;
+          return false;
+        }))
+        upcoming[i] = upcoming[i].slice(0, 10);
       }
 
       //Attach the goals to an object that also has the name of the day
