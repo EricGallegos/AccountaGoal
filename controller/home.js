@@ -1,6 +1,8 @@
 const Goals  = require('../models/Goal');
 const User = require('../models/User')
 const moment = require('moment');
+
+
 module.exports = {
   // @desc     Login / Landing page
   // @route    GET /
@@ -14,8 +16,11 @@ module.exports = {
   // @route    GET /dashboard
   getDashboard: async (req, res) => {
     try {
-      const now = new Date();
-
+      let now = new Date();
+      console.log(now);
+      now = moment(now).add(6, 'hours').toDate();
+      now = moment(now).add(req.session.tzOffset, 'hours').toDate();
+      console.log(now, req.session.tzOffset);
       const allGoals = await Goals.find({
         user: req.user.id,
       }).lean();
@@ -56,7 +61,7 @@ module.exports = {
               await Goals.create({
                 user: req.user.id,
                 dueDate: now,
-                repeating: 'false',
+                repeating: 'false', 
                 body: repeating.body,
                 archived: true,
                 creatorID: repeating._id,
@@ -145,6 +150,12 @@ module.exports = {
       res.redirect('/error/500')
     }
   },
+
+  updateTZ: (req, res) => {
+    req.session.tzOffset = +req.body.tzOffset
+    res.redirect('/dashboard');
+  }
+
 }
 
 

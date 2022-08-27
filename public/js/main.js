@@ -1,3 +1,7 @@
+let tzOffset = new Date().getTimezoneOffset(),
+    tzInput = document.getElementById('tzOffset');
+tzInput.value = tzOffset*(-1)/60;
+
 document.querySelector('#carouselBack').addEventListener('click', (event) => {
   const $slide = document.querySelector(event.target.getAttribute('href'));
   if (!$slide) return;

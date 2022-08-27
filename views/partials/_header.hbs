@@ -12,6 +12,14 @@
       <h4 class="green-text text-darken-2">AccountaGoal</h4>
       <li><a href="/dashboard">Dashboard</a></li>
       <li><a href="/auth/logout">Logout</a></li>
+      <li>
+        <form action="/updateTZ" method="post">
+          <input type="hidden" name="_method" value="post">
+          <input type="hidden" name="tzOffset" id="tzOffset">
+          <div class="dividers"></div>
+          <input type="submit" value="Update TimeZone" class="btn-large">
+        </form>
+      </li>
 
       <li>
         <section id="deleteCarousel">

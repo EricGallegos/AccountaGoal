@@ -2,8 +2,6 @@
   <div class="row section dashMain">
     <div class="col s12 m12 l6 taskList">
       <h4 class="center">Today's Goals</h6>
-
-      {{#if todaysGoals}}
         <table class="striped todaysGoals">
           <thead>
             <tr>
@@ -13,53 +11,51 @@
             </tr>
           </thead>
           <tbody>
-            {{#each todaysGoals}}
-              <tr {{#if (checkStatus status)}} class="green lighten-5"{{/if}}>
-                <td class="center status">
-                  {{#if (checkStatus status)}}
-                    <form class="put-form" action="/goals/toggleIncomplete/{{_id}}" method="post">
-                      <input type="hidden" name="_method" value="put">
-                      <button type="submit" name="toggleIncomplete" class="btn-small btn-float green darken-2">
-                        <i class="fa-solid fa-check"></i>
+            {{#if todaysGoals}}
+              {{#each todaysGoals}}
+                <tr {{#if (checkStatus status)}} class="green lighten-5"{{/if}}>
+                  <td class="center status">
+                    {{#if (checkStatus status)}}
+                      <form class="put-form" action="/goals/toggleIncomplete/{{_id}}" method="post">
+                        <input type="hidden" name="_method" value="put">
+                        <button type="submit" name="toggleIncomplete" class="btn-small btn-float green darken-2">
+                          <i class="fa-solid fa-check"></i>
+                        </button>
+                      </form>
+                    {{else}}
+                      <form class="put-form" action="/goals/toggleComplete/{{_id}}" method="post">
+                        <input type="hidden" name="_method" value="put">
+                        <button type="submit" name="toggleComplete" class="btn-small btn-float grey darken-3">
+                          <i class="fa-solid fa-x"></i>
+                        </button>
+                      </form>
+                    {{/if}}
+                  </td>
+                  <td>{{{truncate (stripTags body) 60}}}</td>
+                  <td id="editDeleteButtons">
+                    <a href="/goals/edit/{{_id}}" class="btn-small btn-float left">
+                      <i class="fas fa-edit"></i>
+                    </a>
+
+                    <form id="delete-form" action="/goals/{{_id}}" method="post">
+                      <input type="hidden" name="_method" value="delete">
+                      <button type="submit" name="DELETE" class="btn-small btn-float right red darken-2">
+                        <i class="fas fa-trash"></i>
                       </button>
                     </form>
-                  {{else}}
-                    <form class="put-form" action="/goals/toggleComplete/{{_id}}" method="post">
-                      <input type="hidden" name="_method" value="put">
-                      <button type="submit" name="toggleComplete" class="btn-small btn-float grey darken-3">
-                        <i class="fa-solid fa-x"></i>
-                      </button>
-                    </form>
-                  {{/if}}
-                </td>
-                <td>{{{truncate (stripTags body) 60}}}</td>
-                <td id="editDeleteButtons">
-                  <a href="/goals/edit/{{_id}}" class="btn-small btn-float left">
-                    <i class="fas fa-edit"></i>
-                  </a>
-
-                  <form id="delete-form" action="/goals/{{_id}}" method="post">
-                    <input type="hidden" name="_method" value="delete">
-                    <button type="submit" name="DELETE" class="btn-small btn-float right red darken-2">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </form>
-                </td>
-              </tr>
-            {{/each}}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td></td>
-              <td><a href="/goals/add">Add new goal</a></td>
-              <td></td>
-            </tr>
-          </tfoot>
-        </table>
-
-      {{else}}
-        <p class="center">You have not made any goals yet. Use the add goal button in the bottom right.</p>
-      {{/if}}
+                  </td>
+                </tr>
+              {{/each}}
+          {{/if}}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td><a href="/goals/add">Add new goal</a></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
     <div class="col s12 m12 l6">
       <h4 class="center">Your AccountaGoal History</h4>

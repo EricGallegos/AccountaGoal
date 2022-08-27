@@ -63,7 +63,7 @@ app.set('view engine', '.hbs');
 // Sessions
 app.use(session({
   secret: 'keyboard cat',
-  resave: true,
+  resave: false,
   saveUninitialized: false,
   store: new MongoStore({
     mongooseConnection: mongoose.connection,
