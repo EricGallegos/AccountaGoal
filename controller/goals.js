@@ -68,7 +68,9 @@ module.exports = {
         res.redirect('/dashboard');
       }
       else{
-        const now = new Date();
+        let now = new Date();
+        now = moment(now).add(6, 'hours').toDate();
+        now = moment(now).add(req.session.tzOffset, 'hours').toDate();
         goal = await Goals.findOneAndUpdate({ _id: req.params.id }, req.body, {
           runValidators: true,
         });
@@ -133,6 +135,9 @@ module.exports = {
   // @route    PUT /goals/:id
   toggleComplete: async(req, res) =>{
     try {
+      let now = new Date();
+      now = moment(now).add(6, 'hours').toDate();
+      now = moment(now).add(req.session.tzOffset, 'hours').toDate();
       let goal = await Goals.findById(req.params.id).lean();
       if(!goal){
         return res.render('error/404');
@@ -143,7 +148,7 @@ module.exports = {
         goal = await Goals.findOneAndUpdate({ _id: req.params.id }, {
           $set:{
             status: "complete",
-            completedOn: new Date(),
+            completedOn: now,
           },
         });
 

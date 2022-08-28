@@ -31,6 +31,7 @@ module.exports = {
             goal.repeating == 'false') return true;
         return false;
       })
+      console.log(todaysGoals);
       // count archived goals
       let numArchived = 0;
       todaysGoals.forEach( goal =>{
@@ -61,7 +62,8 @@ module.exports = {
               await Goals.create({
                 user: req.user.id,
                 dueDate: now,
-                repeating: 'false', 
+                repeating: 'false',
+                status: 'incomplete',
                 body: repeating.body,
                 archived: true,
                 creatorID: repeating._id,
