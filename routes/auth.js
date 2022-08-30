@@ -12,4 +12,5 @@ router.get('/google/callback', passport.authenticate('google', {
 
 router.get('/logout', controller.logout);
 
+
 module.exports = router;

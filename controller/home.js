@@ -16,11 +16,12 @@ module.exports = {
   // @route    GET /dashboard
   getDashboard: async (req, res) => {
     try {
+      let tzOffset = await User.findById(req.user.id, 'tzOffset').lean();
+      tzOffset = tzOffset.tzOffset
       let now = new Date();
-      console.log(now);
+      console.log(now, tzOffset);
       now = moment(now).add(6, 'hours').toDate();
       now = moment(now).add(req.session.tzOffset, 'hours').toDate();
-      console.log(now, req.session.tzOffset);
       const allGoals = await Goals.find({
         user: req.user.id,
       }).lean();
@@ -31,7 +32,6 @@ module.exports = {
             goal.repeating == 'false') return true;
         return false;
       })
-      console.log(todaysGoals);
       // count archived goals
       let numArchived = 0;
       todaysGoals.forEach( goal =>{
@@ -139,7 +139,6 @@ module.exports = {
   // @route    DELETE /account/deleteAccount
   deleteAccount: async (req, res) => {
     try {
-      console.log(req.user.id);
       await Goals.deleteMany({
         user: req.user.id,
       })
@@ -153,8 +152,8 @@ module.exports = {
     }
   },
 
-  updateTZ: (req, res) => {
-    req.session.tzOffset = +req.body.tzOffset
+  updateTZ: async (req, res) => {
+    await User.findByIdAndUpdate( req.user.id, {tzOffset: +req.body.tzOffset} );
     res.redirect('/dashboard');
   }
 

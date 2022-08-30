@@ -13,4 +13,5 @@ router.delete('/account/deleteAccount', ensureAuth, controller.deleteAccount)
 
 router.post('/updateTZ', ensureAuth, controller.updateTZ)
 
+
 module.exports = router;
