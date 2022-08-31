@@ -17,11 +17,12 @@ module.exports = {
   getDashboard: async (req, res) => {
     try {
       let tzOffset = await User.findById(req.user.id, 'tzOffset').lean();
-      tzOffset = tzOffset.tzOffset
+      req.session.tzOffset = tzOffset.tzOffset;
       let now = new Date();
-      // now = moment(now).add(6, 'hours').toDate();
+      console.log(now)
+      now = moment(now).add(6, 'hours').toDate();
       now = moment(now).add(req.session.tzOffset, 'hours').toDate();
-      console.log(now, tzOffset);
+      console.log(now);
       const allGoals = await Goals.find({
         user: req.user.id,
       }).lean();
@@ -32,6 +33,7 @@ module.exports = {
             goal.repeating == 'false') return true;
         return false;
       })
+      console.log(todaysGoals);
       // count archived goals
       let numArchived = 0;
       todaysGoals.forEach( goal =>{
