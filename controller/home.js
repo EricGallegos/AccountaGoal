@@ -100,7 +100,7 @@ module.exports = {
         upcoming.push( allGoals.filter( goal => {
           if( goal.dueDate.getTime() > moment(now).add(i+1, 'days').toDate().getTime() &&
               goal.startDate.getTime() < moment(now).add(i+1, 'days').toDate().getTime() &&
-              goal.repeating == 'false' ) return true;
+              goal.archived == false && goal.repeating == 'false' ) return true;
           return false;
         }))
         upcoming[i] = upcoming[i].concat( repeatingGoals.filter( goal => {
