@@ -19,9 +19,9 @@ module.exports = {
       let tzOffset = await User.findById(req.user.id, 'tzOffset').lean();
       tzOffset = tzOffset.tzOffset
       let now = new Date();
-      console.log(now, tzOffset);
-      now = moment(now).add(6, 'hours').toDate();
+      // now = moment(now).add(6, 'hours').toDate();
       now = moment(now).add(req.session.tzOffset, 'hours').toDate();
+      console.log(now, tzOffset);
       const allGoals = await Goals.find({
         user: req.user.id,
       }).lean();
