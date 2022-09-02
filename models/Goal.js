@@ -45,7 +45,10 @@ const GoalSchema = new mongoose.Schema({
   },
   creatorID:{
     type: mongoose.Schema.Types.ObjectId,
-  }
+  },
+  daysOfWeek: [{
+    type: String,
+  }],
 })
 
 GoalSchema.pre('save', async function(){

@@ -16,28 +16,75 @@ module.exports = {
   // @route    GET /dashboard
   getDashboard: async (req, res) => {
     try {
+      // Timezone offset ================================================
       let tzOffset = await User.findById(req.user.id, 'tzOffset').lean();
       req.session.tzOffset = tzOffset.tzOffset;
       let now = new Date();
-      console.log(now)
       now = moment(now).add(6, 'hours').toDate();
       now = moment(now).add(req.session.tzOffset, 'hours').toDate();
-      console.log(now);
+
+      // Get users goals from db ========================================
       const allGoals = await Goals.find({
         user: req.user.id,
       }).lean();
 
       let todaysGoals = allGoals.filter( goal => {
-        if( goal.dueDate.getTime() > now &&
-            goal.startDate.getTime() < now &&
-            goal.repeating == 'false') return true;
+        if( goal.repeating == 'false' &&
+            goal.dueDate.getTime() > now &&
+            goal.startDate.getTime() < now
+            ) return true;
         return false;
       })
-      console.log(todaysGoals);
+      let todaysArchivedWeeklyGoals = allGoals.filter( goal =>{
+        if( goal.repeating == 'weekly' &&
+            goal.archived == true &&
+            goal.dueDate.getTime() > now &&
+            goal.startDate.getTime() < now) return true;
+        return false;
+      })
+      todaysGoals = todaysGoals.concat(todaysArchivedWeeklyGoals)
+
+      let weeklyGoals = allGoals.filter( goal => {
+        if( goal.repeating == 'weekly' &&
+            goal.archived == false &&
+            goal.daysOfWeek.includes( moment(now).format('dddd').toString() ) ) {
+              return true;
+            }
+        return false;
+      })
+
+      if(todaysArchivedWeeklyGoals.length < weeklyGoals.length){
+        weeklyGoals.forEach( async weekly =>{
+          const found = todaysArchivedWeeklyGoals.filter( goal => {
+            if( goal.creatorID == weekly._id &&
+                goal.archived == true &&
+                goal.dueDate.getTime() > now &&
+                goal.startDate.getTime() < now ) {
+                  console.log(goal);
+                  return true;
+                }
+            return false;
+          })
+          console.log(found);
+          if( found.length == 0 ){
+            //console.log('creating goal based on ', weekly);
+            await Goals.create({
+              user: req.user.id,
+              dueDate: now,
+              repeating: 'weekly',
+              status: 'incomplete',
+              body: weekly.body,
+              archived: true,
+              creatorID: weekly._id,
+            })
+          }
+        })
+        res.redirect('/dashboard'); // If new goals were added reload the page
+      }
       // count archived goals
       let numArchived = 0;
       todaysGoals.forEach( goal =>{
-        if(goal.archived) numArchived++;
+        if(goal.archived && goal.repeating != 'weekly') numArchived++;
       })
 
       // Get all repeating goals that should appear
@@ -48,13 +95,14 @@ module.exports = {
         return false;
       })
 
+
       //If fewer archived goals than repeating goals we must add new archived goals
       if(repeatingGoals.length > numArchived ){
         // Check for a archived goal with a matching creatorID
         repeatingGoals.forEach( async repeating => {
           const found = allGoals.filter( goal => {
             if( goal.creatorID == repeating._id &&
-                archived == true &&
+                goal.archived == true &&
                 goal.dueDate.getTime() > now &&
                 goal.startDate.getTime() < now) return true;
             return false;
@@ -85,12 +133,11 @@ module.exports = {
 
       // Get goal data to build history chart
       const totalGoals = allGoals.filter( goal => {
-        if(goal.repeating == 'false') return true;
+        if(goal.repeating == 'false' || goal.archived) return true;
         return false;
       })
-      const totalCompleted = allGoals.filter( goal => {
-        if( goal.repeating == 'false' &&
-            goal.status == 'complete' &&
+      const totalCompleted = totalGoals.filter( goal => {
+        if( goal.status == 'complete' &&
             goal.completedOn.getTime() < goal.dueDate.getTime() ) return true;
         return false;
       })
@@ -107,6 +154,10 @@ module.exports = {
         }))
         upcoming[i] = upcoming[i].concat( repeatingGoals.filter( goal => {
           if( goal.startDate.getTime() < moment(now).add(i+1, 'days').toDate().getTime() ) return true;
+          return false;
+        }))
+        upcoming[i] = upcoming[i].concat( weeklyGoals.filter( goal => {
+          if( goal.daysOfWeek.includes( moment(now).add(i+1, 'days').format('dddd').toString() ) ) return true;
           return false;
         }))
         upcoming[i] = upcoming[i].slice(0, 10);

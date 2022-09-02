@@ -8,12 +8,43 @@
           <select id="status" name="repeating">
             <option value="false" selected>One Day</option>
             <option value="true">Every Day (Date determines when goal will first appear)</option>
+            <option id="weekly" value="weekly">On specific days of the week</option>
           </select>
           <label for="repeating">Should this goal repeat daily?</label>
         </div>
       </div>
 
-      <div class="row">
+      <div id="inputDayOfWeek" class="row">
+        <div class="col s12 section">
+          <label><input type="checkbox" name="Monday" value="Monday">
+            <span>Monday</span>
+          </label>
+          <label><input type="checkbox" name="Tuesday" value="Tuesday">
+            <span>Tuesday</span>
+          </label>
+          <label><input type="checkbox" name="Wednesday" value="Wednesday">
+            <span>Wednesday</span>
+          </label>
+          <label><input type="checkbox" name="Thursday" value="Thursday">
+            <span>Thursday</span>
+          </label>
+          <label><input type="checkbox" name="Friday" value="Friday">
+            <span>Friday</span>
+          </label>
+          <label><input type="checkbox" name="Saturday" value="Saturday">
+            <span>Saturday</span>
+          </label>
+          <label><input type="checkbox" name="Sunday" value="Sunday">
+            <span>Sunday</span>
+          </label>
+          <div class="divider"></div>
+
+          <!-- <input type="text" name="dueDate" value="{{getToday "en-US"}}" class="datepicker">
+          <label for="dueDate" id="dueDate">Date</label> -->
+        </div>
+      </div>
+
+      <div id="inputDate" class="row">
         <div class="input-field">
           <input type="date" name="dueDate" value="{{getToday "en-US"}}"
                  min="2022-1-1" max="2023-12-31">
@@ -30,9 +61,12 @@
       </div>
 
       <div class="row">
-        <input type="submit" value="Save" class="btn green darken-3">
-        <a href="/dashboard" class="btn grey darken-3">Cancel</a>
+        <input type="submit" value="Save" class="btn-large green darken-3">
+        <a href="/dashboard" class="btn-large grey darken-3">Cancel</a>
       </div>
     </form>
   </div>
 </section>
+<script src="../js/add.js" type="text/javascript">
+
+</script>

@@ -230,11 +230,19 @@ p{
   gap:1px;
 }
 
-
 .chart-cell{
   min-width: 20px;
   min-height: 20px;
   flex-grow: 1;
   aspect-ratio: 1/1;
   width: 13%;
+}
+
+#inputDayOfWeek{
+  display: none;
+}
+
+#inputDayOfWeek > div{
+  display: flex;
+  gap: 4rem;
 }

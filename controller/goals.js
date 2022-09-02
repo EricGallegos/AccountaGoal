@@ -13,7 +13,11 @@ module.exports = {
   postGoal: async (req, res) => {
     try {
       req.body.user = req.user.id;
-      temp = await Goals.create(req.body);
+      let temp;
+      if(req.body.repeating !== 'weekly'){
+        temp = await Goals.create(req.body);
+      }
+
       if(req.body.repeating == 'true'){
         await Goals.create({
           user: req.body.user,
@@ -23,6 +27,42 @@ module.exports = {
           dueDate: req.body.dueDate,
         })
       }
+
+      if(req.body.repeating == 'weekly'){
+        const weekly = [];
+        if(req.body.Monday) weekly.push(req.body.Monday);
+        if(req.body.Tuesday) weekly.push(req.body.Tuesday);
+        if(req.body.Wednesday) weekly.push(req.body.Wednesday);
+        if(req.body.Thursday) weekly.push(req.body.Thursday);
+        if(req.body.Friday) weekly.push(req.body.Friday);
+        if(req.body.Saturday) weekly.push(req.body.Saturday);
+        if(req.body.Sunday) weekly.push(req.body.Sunday);
+
+        let now = new Date();
+        now = moment(now).add(6, 'hours').toDate();
+        now = moment(now).add(req.session.tzOffset, 'hours').toDate();
+
+        const temp2 = await Goals.create({
+          user: req.body.user,
+          body: req.body.body,
+          repeating: req.body.repeating,
+          daysOfWeek: weekly,
+          dueDate: now,
+        })
+
+
+        if( temp2.daysOfWeek.includes( moment(now).format('dddd') ) ){
+          await Goals.create({
+            user: req.body.user,
+            body: req.body.body,
+            repeating: req.body.repeating,
+            archived: true,
+            creatorID: temp2._id,
+            dueDate: now,
+          })
+        }
+      }
+
       res.redirect('/dashboard');
     }
     catch (e) {
@@ -192,8 +232,7 @@ module.exports = {
   // @route    DELETE /goals/<goal.id>
   deleteGoal: async (req, res) => {
     try {
-      const target = await Goals.findOne( { _id: req.params.id } )
-      await Goals.deleteOne( { _id: req.params.id } );
+      const target = await Goals.findOneAndDelete( { _id: req.params.id } );
       if(target.archived == true ){
         await Goals.deleteOne( { _id: target.creatorID })
       }
