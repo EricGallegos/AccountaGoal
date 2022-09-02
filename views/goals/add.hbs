@@ -1,16 +1,17 @@
 <section id="Wrapper">
-  <h5 class="center">New Goals?</h5>
+  <h5 class="center">Add New Goals</h5>
   <div class="row">
     <form class="col s12" action="/goals" method="post">
 
       <div class="row section">
+        <p>How Often?</p>
         <div class="input-field">
           <select id="status" class="browser-default" name="repeating">
             <option value="false" selected>One Day</option>
             <option value="true">Every Day (Date determines when goal will first appear)</option>
             <option id="weekly" value="weekly">On specific days of the week</option>
           </select>
-          <label for="repeating">Should this goal repeat daily?</label>
+          <label for="repeating"></label>
         </div>
       </div>
 
