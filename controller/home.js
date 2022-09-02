@@ -156,8 +156,9 @@ module.exports = {
           if( goal.startDate.getTime() < moment(now).add(i+1, 'days').toDate().getTime() ) return true;
           return false;
         }))
-        upcoming[i] = upcoming[i].concat( weeklyGoals.filter( goal => {
-          if( goal.daysOfWeek.includes( moment(now).add(i+1, 'days').format('dddd').toString() ) ) return true;
+        upcoming[i] = upcoming[i].concat( allGoals.filter( goal => {
+          if( goal.repeating == 'weekly' &&
+              goal.daysOfWeek.includes( moment(now).add(i+1, 'days').format('dddd').toString() ) ) return true;
           return false;
         }))
         upcoming[i] = upcoming[i].slice(0, 10);
