@@ -28,7 +28,7 @@ Even better that data will be everything you have been getting done!
 
 ## Features in Development
 - Dark theme
-- ~~Ability to add goals that reoccur by day of week (Sun, Mon, ...)~~ Just Added
+- ~~Ability to add goals that reoccur by day of week (Sun, Mon, ...)~~ Added Sep 1 2022
 - History chart will have data hidden within showing total goals completed on that day that can be viewed on mouse hover.
 
 ## Contribution

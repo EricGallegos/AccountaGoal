@@ -218,22 +218,27 @@ function generateChart(all, completed, now){
   let totalNum;
   let completedNum;
   let dailyValues = [];
+  let dates = [];
+  let finished = [];
+  let total = [];
 
-  for (let i = 0; i < 140; i++){
+  for (let i = 0; i < 112; i++){
     totalNum = 0;
     completedNum = 0;
     let start = moment(now).startOf('day').add(-i, 'days').toDate();
-
+    dates.push(moment(now).add(-i, 'days').format('dddd, MMMM Do YYYY'))
     completed.forEach( completedGoal =>{
       if( completedGoal.startDate.getTime() == start.getTime()){
         completedNum++;
       }
     })
+    finished.push(completedNum);
     all.forEach( goal =>{
       if( goal.startDate.getTime() == start.getTime()){
         totalNum++;
       }
     })
+    total.push(totalNum)
     if(totalNum == 0 || completedNum == 0) {
       dailyValues.push(0);
     }else{
@@ -253,5 +258,15 @@ function generateChart(all, completed, now){
     if( val > .8 && val <= .9 ) return .9;
     if( val > .9 && val <= 1 ) return 1;
   })
+
+  dailyValues = dailyValues.map( (value, i, arr) => {
+    return {
+      percentage: value,
+      date: dates[i],
+      completed: finished[i],
+      total: total[i],
+    }
+  })
+
   return dailyValues;
 }

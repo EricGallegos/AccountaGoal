@@ -129,6 +129,10 @@ p{
   color: rgba(0, 0, 0, .5);
 }
 
+.dashMain{
+  margin-bottom: 0px;
+}
+
 #completed{
   width:80px;
 }
@@ -224,8 +228,7 @@ p{
   scrollbar-width: thin;
   display: flex;
   flex-wrap: wrap;
-  max-height: 500px;
-  overflow-y: auto;
+  /* max-height: 500px; */
   padding: 0;
   gap:1px;
 }
@@ -236,6 +239,21 @@ p{
   flex-grow: 1;
   aspect-ratio: 1/1;
   width: 13%;
+  z-index: 2;
+}
+
+.hiddenDailyDetails{
+  display: none;
+  position: absolute;
+  top: -2.4rem;
+  left: -100%;
+  background: white;
+  font-size: 1.4rem;
+  width: 300%;
+}
+
+.chart-cell:hover + .hiddenDailyDetails{
+  display: block;
 }
 
 #inputDayOfWeek{
