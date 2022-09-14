@@ -49,7 +49,7 @@ app.engine('.hbs', exphbs.engine({
     formatDate,
     stripTags,
     truncate,
-    editIcon,
+    editIcon, 
     select,
     checkStatus,
     getToday,
