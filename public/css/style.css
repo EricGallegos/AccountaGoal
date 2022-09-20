@@ -15,10 +15,6 @@
   font-size: 1.2rem;
 }
 
-.container{
-  max-width: none;
-  margin: none;
-}
 
 #deleteCarousel{
   display: flex;
@@ -63,6 +59,10 @@ p{
   width: 4rem;
 }
 
+.goalTable{
+  width: 85%;
+}
+
 #addGoalButton{
   height: 80px;
   width: 80px;
@@ -87,7 +87,7 @@ p{
 #navBar{
   display: flex;
   width: 100%;
-  height: 100px;
+  height: 80px;
 }
 
 #navBar .sidenav-trigger i{
@@ -116,8 +116,7 @@ p{
 }
 
 .brand-logo{
-  width: 140px;
-  bottom: -40px;
+  height: 140%;
 }
 
 .brand-logo img{
@@ -245,11 +244,12 @@ p{
 .hiddenDailyDetails{
   display: none;
   position: absolute;
-  top: -2.4rem;
-  left: -100%;
-  background: white;
-  font-size: 1.4rem;
-  width: 300%;
+  color: white;
+  top: -2.2rem;
+  left: -6vw;
+  background-color: #212121;
+  font-size: 1rem;
+  width: 150%;
 }
 
 .chart-cell:hover + .hiddenDailyDetails{

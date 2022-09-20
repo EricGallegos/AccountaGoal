@@ -4,13 +4,13 @@
     <h5 id="upcoming">Upcoming</h5>
   </div>
   <div class="row">
-    <a href="#one!">
+    <!-- <a href="#one!">
       <div id="carouselBack" class="col s1 carouselButton">
         <i class="fa-solid fa-arrow-left"></i>
       </div>
-    </a>
+    </a> -->
 
-    <div class="col s10 calendarCarousel">
+    <div class="col s10 offset-s1 calendarCarousel">
       {{#each futureGoals}}
         <a class="col s12 m6 l4 center" id="{{getNumWord @index}}!">
           <div class="card center calendarDay" >
@@ -49,10 +49,10 @@
         </a>
       {{/each}}
     </div>
-    <a href="#six!">
+    <!-- <a href="#six!">
       <div id="carouselForward" class="col s1 carouselButton">
         <i class="fa-solid fa-arrow-right"></i>
       </div>
-    </a>
+    </a> -->
   </div>
 </div>
