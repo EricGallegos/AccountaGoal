@@ -30,16 +30,16 @@ module.exports = {
 
       let todaysGoals = allGoals.filter( goal => {
         if( goal.repeating == 'false' &&
-            goal.dueDate.getTime() > now &&
-            goal.startDate.getTime() < now
+            goal.dueDate.getTime() > now.getTime() &&
+            goal.startDate.getTime() < now.getTime()
             ) return true;
         return false;
       })
       let todaysArchivedWeeklyGoals = allGoals.filter( goal =>{
         if( goal.repeating == 'weekly' &&
             goal.archived == true &&
-            goal.dueDate.getTime() > now &&
-            goal.startDate.getTime() < now) return true;
+            goal.dueDate.getTime() > now.getTime() &&
+            goal.startDate.getTime() < now.getTime()) return true;
         return false;
       })
       todaysGoals = todaysGoals.concat(todaysArchivedWeeklyGoals)
@@ -58,11 +58,8 @@ module.exports = {
           const found = todaysArchivedWeeklyGoals.filter( goal => {
             if( goal.creatorID == weekly._id &&
                 goal.archived == true &&
-                goal.dueDate.getTime() > now &&
-                goal.startDate.getTime() < now ) {
-                  console.log(goal);
-                  return true;
-                }
+                goal.dueDate.getTime() > now.getTime() &&
+                goal.startDate.getTime() < now.getTime() ) return true;
             return false;
           })
           console.log(found);
@@ -103,8 +100,8 @@ module.exports = {
           const found = allGoals.filter( goal => {
             if( goal.creatorID == repeating._id &&
                 goal.archived == true &&
-                goal.dueDate.getTime() > now &&
-                goal.startDate.getTime() < now) return true;
+                goal.dueDate.getTime() > now.getTime() &&
+                goal.startDate.getTime() < now.getTime()) return true;
             return false;
           });
             // If matching creatorID not found, create new archived goal
